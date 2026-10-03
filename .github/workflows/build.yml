@@ -1,0 +1,36 @@
+name: AuraTrace-IR CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-binaries:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: pip install pyinstaller
+    
+    - name: Build Binary (Windows)
+      if: runner.os == 'Windows'
+      run: pyinstaller --onefile --name auratrace_win64 auratrace.py
+      
+    - name: Build Binary (Linux)
+      if: runner.os == 'Linux'
+      run: pyinstaller --onefile --name auratrace_linux64 auratrace.py
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: auratrace-${{ runner.os }}
+        path: dist/auratrace_*
