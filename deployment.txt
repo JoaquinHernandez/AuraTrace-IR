@@ -1,0 +1,39 @@
+Deployment & Usage
+Download the latest pre-compiled standalone binaries from the Releases page or run the Python core directly.
+
+1. Automated Triage & Containment
+Run on the suspected host with root / Administrator privileges to collect data, analyze it via AI, and instantly sever the attacker's network connection:
+
+Bash
+# Linux
+sudo python3 auratrace.py --ai --isolate
+
+# Windows (Elevated PowerShell)
+python.exe auratrace.py --ai --isolate
+2. Interactive AI Forensic Copilot
+Need an expert second opinion? Drop into a live interactive terminal chat with the AIAura engine, feeding it the exact state of the compromised machine:
+
+Bash
+python3 auratrace.py --chat triage_hostname_17000000.json
+Plaintext
+AuraTrace-IR> What process initiated the connection to 185.199.108.153?
+AI Copilot: Based on the network sockets and process tree, PID 10482 (powershell.exe) initiated the outbound HTTPS connection. It was spawned by an anomalous w3wp.exe (IIS worker) parent process.
+🧠 Environment Setup (AI Integration)
+To enable the AI forensic copilot and automated reporting, set your API credentials as environment variables. AuraTrace-IR defaults to the AIAura API, but is compatible with standard OpenAI-spec endpoints.
+
+Bash
+# Linux/macOS
+export AIAURA_API_KEY="your_api_token"
+export AIAURA_API_URL="[https://aiaura.me/api/v1/analyze](https://aiaura.me/api/v1/analyze)"
+
+# Windows (PowerShell)
+$env:AIAURA_API_KEY="your_api_token"
+$env:AIAURA_API_URL="[https://aiaura.me/api/v1/analyze](https://aiaura.me/api/v1/analyze)"
+🛠️ Build from Source
+The included GitHub Actions pipeline automatically compiles cross-platform binaries on every commit. To build them manually:
+
+Bash
+pip install pyinstaller
+pyinstaller --onefile --name auratrace_win64 auratrace.py
+⚖️ License
+This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
